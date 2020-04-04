@@ -1,6 +1,6 @@
-﻿namespace UniversityWebApi.Models
+﻿namespace UniversityData.Models
 {
-    public partial class Students
+    public partial class Student
     {
         public string StudentNumber { get; set; }
         public string Name { get; set; }
@@ -8,6 +8,6 @@
         public string Patronymic { get; set; }
         public int? GroupId { get; set; }
 
-        public virtual Groups Group { get; set; }
+        public virtual Group Group { get; set; }
     }
 }

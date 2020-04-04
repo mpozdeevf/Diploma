@@ -40,3 +40,5 @@ D:\Learning\University\4Course\Diploma\University\UniversityWebApi\bin\Debug\net
 D:\Learning\University\4Course\Diploma\University\UniversityWebApi\bin\Debug\netcoreapp3.1\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 D:\Learning\University\4Course\Diploma\University\UniversityWebApi\bin\Debug\netcoreapp3.1\Npgsql.EntityFrameworkCore.PostgreSQL.Design.dll
 D:\Learning\University\4Course\Diploma\University\UniversityWebApi\obj\Debug\netcoreapp3.1\UniversityWebApi.csproj.CopyComplete
+D:\Learning\University\4Course\Diploma\University\UniversityWebApi\bin\Debug\netcoreapp3.1\UniversityData.dll
+D:\Learning\University\4Course\Diploma\University\UniversityWebApi\bin\Debug\netcoreapp3.1\UniversityData.pdb

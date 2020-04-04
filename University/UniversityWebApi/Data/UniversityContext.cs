@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UniversityWebApi.Models;
+using UniversityData.Models;
 
 namespace UniversityWebApi.Data
 {
@@ -14,25 +14,16 @@ namespace UniversityWebApi.Data
         {
         }
 
-        public virtual DbSet<Departments> Departments { get; set; }
-        public virtual DbSet<Groups> Groups { get; set; }
-        public virtual DbSet<Institutes> Institutes { get; set; }
-        public virtual DbSet<LecturersDepartments> LecturersDepartments { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<Institute> Institutes { get; set; }
+        public virtual DbSet<LecturerDepartment> LecturersDepartments { get; set; }
         public virtual DbSet<Staff> Staff { get; set; }
-        public virtual DbSet<Students> Students { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Host=192.168.56.101;Port=5432;Username=postgres;Password=qweASD#21;Database=university;");
-            }
-        }
+        public virtual DbSet<Student> Students { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Departments>(entity =>
+            modelBuilder.Entity<Department>(entity =>
             {
                 entity.ToTable("departments");
 
@@ -61,7 +52,7 @@ namespace UniversityWebApi.Data
                     .HasConstraintName("departments_institute_id_fkey");
             });
 
-            modelBuilder.Entity<Groups>(entity =>
+            modelBuilder.Entity<Group>(entity =>
             {
                 entity.ToTable("groups");
 
@@ -83,7 +74,7 @@ namespace UniversityWebApi.Data
                     .HasConstraintName("groups_department_id_fkey");
             });
 
-            modelBuilder.Entity<Institutes>(entity =>
+            modelBuilder.Entity<Institute>(entity =>
             {
                 entity.ToTable("institutes");
 
@@ -112,7 +103,7 @@ namespace UniversityWebApi.Data
                     .HasConstraintName("institutes_director_id_fkey");
             });
 
-            modelBuilder.Entity<LecturersDepartments>(entity =>
+            modelBuilder.Entity<LecturerDepartment>(entity =>
             {
                 entity.HasKey(e => new { e.DepartmentId, e.LecturerId })
                     .HasName("pk");
@@ -153,7 +144,7 @@ namespace UniversityWebApi.Data
                     .HasColumnName("surname");
             });
 
-            modelBuilder.Entity<Students>(entity =>
+            modelBuilder.Entity<Student>(entity =>
             {
                 entity.HasKey(e => e.StudentNumber)
                     .HasName("students_pkey");

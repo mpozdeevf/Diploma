@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace UniversityWebApi.Models
+namespace UniversityData.Models
 {
-    public partial class Institutes
+    public partial class Institute
     {
-        public Institutes()
+        public Institute()
         {
-            Departments = new HashSet<Departments>();
+            Departments = new HashSet<Department>();
         }
 
         public int Id { get; set; }
@@ -16,6 +16,6 @@ namespace UniversityWebApi.Models
 
         public virtual Staff Director { get; set; }
         public virtual Staff DirectorDeputy { get; set; }
-        public virtual ICollection<Departments> Departments { get; set; }
+        public virtual ICollection<Department> Departments { get; set; }
     }
 }

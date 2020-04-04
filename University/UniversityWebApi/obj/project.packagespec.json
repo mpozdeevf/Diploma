@@ -15,7 +15,11 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
-        "projectReferences": {}
+        "projectReferences": {
+          "D:\\Learning\\University\\4Course\\Diploma\\University\\UniversityData\\UniversityData.csproj": {
+            "projectPath": "D:\\Learning\\University\\4Course\\Diploma\\University\\UniversityData\\UniversityData.csproj"
+          }
+        }
       }
     },
     "warningProperties": {
