@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "5Y+hY1SdqKY5MscSqncU82YsjO1M3EEJBZnqpH/p8lZFFw+eI2okmMoSPfmXK6zpv/TUC2MVtQEluFpnbpzVOg==",
+  "success": true,
+  "projectFilePath": "D:\\Learning\\University\\4Course\\Diploma\\University\\UniversityAdministrator\\UniversityAdministrator.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mpozd\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
