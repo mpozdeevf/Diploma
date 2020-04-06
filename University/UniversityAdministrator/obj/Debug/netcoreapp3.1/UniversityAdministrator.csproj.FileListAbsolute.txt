@@ -4,6 +4,7 @@ D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\bin\De
 D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\bin\Debug\netcoreapp3.1\UniversityAdministrator.runtimeconfig.dev.json
 D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\bin\Debug\netcoreapp3.1\UniversityAdministrator.dll
 D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\bin\Debug\netcoreapp3.1\UniversityAdministrator.pdb
+D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\bin\Debug\netcoreapp3.1\UniversityData.dll
 D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\bin\Debug\netcoreapp3.1\UniversityData.pdb
 D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\obj\Debug\netcoreapp3.1\UniversityAdministrator.csprojAssemblyReference.cache
@@ -19,4 +20,3 @@ D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\obj\De
 D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\obj\Debug\netcoreapp3.1\UniversityAdministrator.dll
 D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\obj\Debug\netcoreapp3.1\UniversityAdministrator.pdb
 D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\obj\Debug\netcoreapp3.1\UniversityAdministrator.genruntimeconfig.cache
-D:\Learning\University\4Course\Diploma\University\UniversityAdministrator\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

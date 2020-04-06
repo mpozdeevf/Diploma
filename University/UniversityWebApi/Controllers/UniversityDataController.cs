@@ -312,9 +312,9 @@ namespace UniversityWebApi.Controllers
 
         [HttpDelete("id")]
         [Route("students")]
-        public ActionResult<Student> DeleteStudent(string studentNumber)
+        public ActionResult<Student> DeleteStudent(string id)
         {
-            var student = _context.Students.FirstOrDefault(s => s.StudentNumber == studentNumber);
+            var student = _context.Students.FirstOrDefault(s => s.StudentNumber == id);
             if (student == null)
             {
                 return NotFound();

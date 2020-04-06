@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UniversityAdministrator.Interactors;
 using UniversityAdministrator.Models;
 using UniversityAdministrator.Views.Students;
@@ -9,12 +11,22 @@ namespace UniversityAdministrator.Presenters
     {
         private readonly StudentsInteractor _interactor;
         private readonly IStudentsWindow _window;
-        
+
         public StudentsPresenter(IStudentsWindow window)
         {
             _window = window;
             _interactor = new StudentsInteractor();
             UpdateData();
+        }
+
+        public void DeleteStudent(StudentModel student)
+        {
+            _interactor.DeleteStudent(student);
+        }
+
+        public void EditStudents(IEnumerable<StudentModel> students)
+        {
+            _interactor.EditStudents(students);
         }
 
         public void UpdateData()
@@ -29,7 +41,7 @@ namespace UniversityAdministrator.Presenters
             var institutes = new ObservableCollection<string>(_interactor.GetInstitutes());
             var departments = new ObservableCollection<string>(_interactor.GetDepartments());
             var groups = new ObservableCollection<string>(_interactor.GetGroups());
-            
+
             _window.UpdateUi(students, institutes, departments, groups);
         }
     }

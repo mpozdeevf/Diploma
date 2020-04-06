@@ -14,13 +14,13 @@ namespace UniversityAdministrator.Views.Students
     public partial class MainWindow : Window, IStudentsWindow
     {
         private readonly StudentsPresenter _presenter;
-        
+
         public MainWindow()
         {
             InitializeComponent();
             _presenter = new StudentsPresenter(this);
         }
-        
+
         public void UpdateUi(ObservableCollection<StudentModel> students, ObservableCollection<string> institutes,
             ObservableCollection<string> departments, ObservableCollection<string> groups)
         {
@@ -28,7 +28,7 @@ namespace UniversityAdministrator.Views.Students
             InstituteColumn.ItemsSource = null;
             DepartmentColumn.ItemsSource = null;
             GroupColumn.ItemsSource = null;
-            
+
             StudentsGrid.ItemsSource = students;
             InstituteColumn.ItemsSource = institutes;
             DepartmentColumn.ItemsSource = departments;
@@ -42,17 +42,56 @@ namespace UniversityAdministrator.Views.Students
 
         private void DeleteButton_OnClick(object sender, RoutedEventArgs e)
         {
-            
+            var items = StudentsGrid.SelectedItems;
+            foreach (var item in items)
+            {
+                _presenter.DeleteStudent((StudentModel) item);
+            }
+            _presenter.UpdateData();
         }
-        
+
         private void EditButton_OnClick(object sender, RoutedEventArgs e)
         {
-
+            SetEditCreateMode();
         }
 
-        private void CreateButton_OnClick(object sender, RoutedEventArgs e)
+        private void CancelButton_OnClick(object sender, RoutedEventArgs e)
         {
+            SetNormalMode();
+            _presenter.UpdateData();
+        }
 
+        private void SaveButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            SetNormalMode();
+            _presenter.EditStudents(StudentsGrid.Items.Cast<StudentModel>());
+            _presenter.UpdateData();
+        }
+
+        private void SetEditCreateMode()
+        {
+            StudentsGrid.CanUserAddRows = true;
+            StudentsGrid.IsReadOnly = false;
+            
+            UpdateButton.Visibility = Visibility.Collapsed;
+            DeleteButton.Visibility = Visibility.Collapsed;
+            EditButton.Visibility = Visibility.Collapsed;
+
+            CancelButton.Visibility = Visibility.Visible;
+            SaveButton.Visibility = Visibility.Visible;
+        }
+
+        private void SetNormalMode()
+        {
+            StudentsGrid.CanUserAddRows = false;
+            StudentsGrid.IsReadOnly = true;
+            
+            UpdateButton.Visibility = Visibility.Visible;
+            DeleteButton.Visibility = Visibility.Visible;
+            EditButton.Visibility = Visibility.Visible;
+
+            CancelButton.Visibility = Visibility.Collapsed;
+            SaveButton.Visibility = Visibility.Collapsed;
         }
     }
 }

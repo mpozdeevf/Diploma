@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using Newtonsoft.Json;
 using UniversityAdministrator.Models;
 using UniversityData.Models;
@@ -85,8 +86,6 @@ namespace UniversityAdministrator.Repositories
 
         #endregion
 
-        #region DeleteStudent
-
         public static void DeleteStudent(string studentNumber)
         {
             try
@@ -100,6 +99,34 @@ namespace UniversityAdministrator.Repositories
             }
         }
 
-        #endregion
+        public static void CreateStudent(Student dbStudent)
+        {
+            try
+            {
+                var response = Client.PostAsync(StudentsApiAddress,
+                        new StringContent(JsonConvert.SerializeObject(dbStudent), Encoding.UTF8, "application/json"))
+                    .Result;
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+        }
+        
+        public static void UpdateStudent(Student dbStudent)
+        {
+            try
+            {
+                var response = Client.PutAsync(StudentsApiAddress,
+                        new StringContent(JsonConvert.SerializeObject(dbStudent), Encoding.UTF8, "application/json"))
+                    .Result;
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+        }
     }
 }

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1500">
+        Title="Администратор" Height="450" SizeToContent="Width">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="20 8 20 8" />
@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <DataGrid x:Name="StudentsGrid" AutoGenerateColumns="False" Grid.Row="0" CanUserAddRows="False"
-                  CanUserDeleteRows="False" IsReadOnly="False">
+                  CanUserDeleteRows="False" IsReadOnly="True" HorizontalAlignment="Center" Margin="5 5 5 0">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding StudentNumber}" Header="Номер студента" />
                 <DataGridComboBoxColumn x:Name="InstituteColumn" SelectedValueBinding="{Binding Institute}"
@@ -36,7 +36,8 @@
             <Button x:Name="UpdateButton" Content="Обновить" Click="UpdateButton_OnClick" />
             <Button x:Name="DeleteButton" Content="Удалить" Click="DeleteButton_OnClick" />
             <Button x:Name="EditButton" Content="Редактировать" Click="EditButton_OnClick" />
-            <Button x:Name="CreateButton" Content="Создать" Click="CreateButton_OnClick" />
+            <Button x:Name="CancelButton" Content="Отмена" Click="CancelButton_OnClick" Visibility="Collapsed" />
+            <Button x:Name="SaveButton" Content="Сохранить" Click="SaveButton_OnClick" Visibility="Collapsed" />
         </StackPanel>
     </Grid>
 </Window>

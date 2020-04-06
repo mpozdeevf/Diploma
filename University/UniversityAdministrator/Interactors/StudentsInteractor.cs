@@ -25,6 +25,26 @@ namespace UniversityAdministrator.Interactors
             _dbGroups = DataRepository.GetDbGroups();
             _dbStudents = DataRepository.GetDbStudents();
         }
+        
+        public void DeleteStudent(StudentModel student)
+        {
+            DataRepository.DeleteStudent(student.StudentNumber);
+        }
+
+        public void EditStudents(IEnumerable<StudentModel> students)
+        {
+            foreach (var student in students)
+            {
+                if (_dbStudents.FirstOrDefault(dbs => dbs.StudentNumber == student.StudentNumber) == null)
+                {
+                    DataRepository.CreateStudent(GetDbStudent(student));
+                }
+                else
+                {
+                    DataRepository.UpdateStudent(GetDbStudent(student));
+                }
+            }
+        }
 
         public IEnumerable<StudentModel> GetStudents() => _dbStudents.Select(GetStudent);
 
@@ -33,6 +53,20 @@ namespace UniversityAdministrator.Interactors
         public IEnumerable<string> GetDepartments() => _dbDepartments.Select(d => d.Name);
 
         public IEnumerable<string> GetGroups() => _dbGroups.Select(g => g.Name);
+
+        private Student GetDbStudent(StudentModel student)
+        {
+            var dbStudent = new Student
+            {
+                StudentNumber = student.StudentNumber,
+                GroupId = _dbGroups.First(g => g.Name == student.Group).Id,
+                Name = student.Name,
+                Surname = student.Surname,
+                Patronymic = student.Patronymic
+            };
+
+            return dbStudent;
+        }
         
         private StudentModel GetStudent(Student dbStudent)
         {
