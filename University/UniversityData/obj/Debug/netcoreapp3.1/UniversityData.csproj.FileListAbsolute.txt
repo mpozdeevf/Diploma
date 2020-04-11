@@ -1,4 +1,6 @@
 D:\Learning\University\4Course\Diploma\University\UniversityData\bin\Debug\netcoreapp3.1\UniversityData.deps.json
+D:\Learning\University\4Course\Diploma\University\UniversityData\bin\Debug\netcoreapp3.1\UniversityData.runtimeconfig.json
+D:\Learning\University\4Course\Diploma\University\UniversityData\bin\Debug\netcoreapp3.1\UniversityData.runtimeconfig.dev.json
 D:\Learning\University\4Course\Diploma\University\UniversityData\bin\Debug\netcoreapp3.1\UniversityData.dll
 D:\Learning\University\4Course\Diploma\University\UniversityData\bin\Debug\netcoreapp3.1\UniversityData.pdb
 D:\Learning\University\4Course\Diploma\University\UniversityData\obj\Debug\netcoreapp3.1\UniversityData.csprojAssemblyReference.cache
@@ -7,3 +9,4 @@ D:\Learning\University\4Course\Diploma\University\UniversityData\obj\Debug\netco
 D:\Learning\University\4Course\Diploma\University\UniversityData\obj\Debug\netcoreapp3.1\UniversityData.AssemblyInfo.cs
 D:\Learning\University\4Course\Diploma\University\UniversityData\obj\Debug\netcoreapp3.1\UniversityData.dll
 D:\Learning\University\4Course\Diploma\University\UniversityData\obj\Debug\netcoreapp3.1\UniversityData.pdb
+D:\Learning\University\4Course\Diploma\University\UniversityData\obj\Debug\netcoreapp3.1\UniversityData.genruntimeconfig.cache
