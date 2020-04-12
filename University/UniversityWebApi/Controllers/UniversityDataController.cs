@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using UniversityData;
+using UniversityData.Models;
 
 namespace UniversityWebApi.Controllers
 {
@@ -30,6 +31,12 @@ namespace UniversityWebApi.Controllers
 
         [HttpGet("groupId")]
         [Route("student-group")]
-        public IEnumerable<GroupStudentV> GetStudentGroup(int groupId) => _context.GroupStudentV;
+        public IEnumerable<GroupStudentV> GetStudentGroup(int groupId) => 
+            _context.GroupStudents.Where(gs => gs.GroupId == groupId);
+
+        [HttpGet("groupId")]
+        [Route("group-subjects")]
+        public IEnumerable<GroupSubjectV> GetGroupSubjects(int groupId) =>
+            _context.GroupSubjects.Where(gs => gs.GroupId == groupId);
     }
 }

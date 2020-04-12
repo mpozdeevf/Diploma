@@ -14,7 +14,7 @@
         "outputPath": "D:\\Learning\\University\\4Course\\Diploma\\University\\UniversityData\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Microsoft\\Xamarin\\NuGet"
         ],
         "configFilePaths": [
           "C:\\Users\\mpozd\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -84,7 +84,7 @@
         "outputPath": "D:\\Learning\\University\\4Course\\Diploma\\University\\UniversityWebApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Microsoft\\Xamarin\\NuGet"
         ],
         "configFilePaths": [
           "C:\\Users\\mpozd\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -5366,7 +5366,7 @@
   },
   "packageFolders": {
     "C:\\Users\\mpozd\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Microsoft\\Xamarin\\NuGet": {}
   },
   "project": {
     "version": "1.0.0",
@@ -5378,7 +5378,7 @@
       "outputPath": "D:\\Learning\\University\\4Course\\Diploma\\University\\UniversityWebApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Microsoft\\Xamarin\\NuGet"
       ],
       "configFilePaths": [
         "C:\\Users\\mpozd\\AppData\\Roaming\\NuGet\\NuGet.Config",

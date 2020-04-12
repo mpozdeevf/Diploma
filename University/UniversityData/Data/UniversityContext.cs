@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using UniversityData.Models;
 
 namespace UniversityData
 {
@@ -16,7 +17,7 @@ namespace UniversityData
         }
 
         public virtual DbSet<Department> Department { get; set; }
-        public virtual DbSet<GroupStudentV> GroupStudentV { get; set; }
+        public virtual DbSet<GroupStudentV> GroupStudents { get; set; }
         public virtual DbSet<GroupSubjectLink> GroupSubjectLink { get; set; }
         public virtual DbSet<Institute> Institute { get; set; }
         public virtual DbSet<Staff> Staff { get; set; }
@@ -26,6 +27,7 @@ namespace UniversityData
         public virtual DbSet<StudentRequisite> StudentRequisite { get; set; }
         public virtual DbSet<SubSubject> SubSubject { get; set; }
         public virtual DbSet<Subject> Subject { get; set; }
+        public virtual DbSet<GroupSubjectV> GroupSubjects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -74,9 +76,7 @@ namespace UniversityData
 
                 entity.ToTable("group_student_v");
 
-                entity.Property(e => e.GroupName)
-                    .HasColumnName("group_name")
-                    .HasMaxLength(25);
+                entity.Property(e => e.GroupId).HasColumnName("group_id");
 
                 entity.Property(e => e.IsHeadOfGroup).HasColumnName("is_head_of_group");
 
@@ -368,6 +368,23 @@ namespace UniversityData
                     .HasForeignKey(d => d.LecturerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("subject_lecturer_id_fkey");
+            });
+            
+            modelBuilder.Entity<GroupSubjectV>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("group_subject_v");
+
+                entity.Property(e => e.GroupId).HasColumnName("group_id");
+
+                entity.Property(e => e.Semester).HasColumnName("semester");
+
+                entity.Property(e => e.SubjectId).HasColumnName("subject_id");
+
+                entity.Property(e => e.SubjectName)
+                    .HasColumnName("subject_name")
+                    .HasMaxLength(25);
             });
 
             OnModelCreatingPartial(modelBuilder);

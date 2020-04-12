@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace UniversityData
+﻿namespace UniversityData.Models
 {
     public partial class GroupSubjectLink
     {

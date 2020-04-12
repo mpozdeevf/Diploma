@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace UniversityData
+﻿namespace UniversityData.Models
 {
     public partial class GroupStudentV
     {
-        public string GroupName { get; set; }
+        public int? GroupId { get; set; }
         public string StudentName { get; set; }
         public long? SerialNumber { get; set; }
         public int? StudentId { get; set; }
