@@ -1,10 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityWebApi", "UniversityWebApi\UniversityWebApi.csproj", "{7D370B14-833A-456E-9A12-CCA74094B996}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversityWebApi", "UniversityWebApi\UniversityWebApi.csproj", "{7D370B14-833A-456E-9A12-CCA74094B996}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityData", "UniversityData\UniversityData.csproj", "{CAE38E1F-362A-40E9-ABB7-60AF6A8DF322}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityAdministrator", "UniversityAdministrator\UniversityAdministrator.csproj", "{E4BDC554-10FA-4E90-B2F4-D46324FEFBDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversityData", "UniversityData\UniversityData.csproj", "{CAE38E1F-362A-40E9-ABB7-60AF6A8DF322}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +21,11 @@ Global
 		{CAE38E1F-362A-40E9-ABB7-60AF6A8DF322}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAE38E1F-362A-40E9-ABB7-60AF6A8DF322}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAE38E1F-362A-40E9-ABB7-60AF6A8DF322}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4BDC554-10FA-4E90-B2F4-D46324FEFBDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4BDC554-10FA-4E90-B2F4-D46324FEFBDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4BDC554-10FA-4E90-B2F4-D46324FEFBDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4BDC554-10FA-4E90-B2F4-D46324FEFBDC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF509C13-361E-4F78-AC6F-83BE95675A1D}
 	EndGlobalSection
 EndGlobal
