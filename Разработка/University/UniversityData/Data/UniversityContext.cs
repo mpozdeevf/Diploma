@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 using UniversityData.Models;
 
 namespace UniversityData
@@ -16,18 +17,29 @@ namespace UniversityData
         {
         }
 
-        public virtual DbSet<Department> Department { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseNpgsql("Host = 192.168.56.101; Port = 5432; Username = postgres; Password = qweASD#21;Database=university;");
+            }
+        }
+
+        public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<GroupStudentV> GroupStudents { get; set; }
         public virtual DbSet<GroupSubjectLink> GroupSubjectLink { get; set; }
-        public virtual DbSet<Institute> Institute { get; set; }
+        public virtual DbSet<Institute> Institutes { get; set; }
         public virtual DbSet<Staff> Staff { get; set; }
-        public virtual DbSet<StaffDepartmentLink> StaffDepartmentLink { get; set; }
-        public virtual DbSet<Student> Student { get; set; }
+        public virtual DbSet<StaffDepartmentLink> StaffDepartmentLinks { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<StudentGroup> StudentGroup { get; set; }
         public virtual DbSet<StudentRequisite> StudentRequisite { get; set; }
         public virtual DbSet<SubSubject> SubSubject { get; set; }
         public virtual DbSet<Subject> Subject { get; set; }
         public virtual DbSet<GroupSubjectV> GroupSubjects { get; set; }
+        public virtual DbSet<AuthUserStudent> AuthUserStudents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -369,7 +381,7 @@ namespace UniversityData
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("subject_lecturer_id_fkey");
             });
-            
+
             modelBuilder.Entity<GroupSubjectV>(entity =>
             {
                 entity.HasNoKey();
@@ -385,6 +397,43 @@ namespace UniversityData
                 entity.Property(e => e.SubjectName)
                     .HasColumnName("subject_name")
                     .HasMaxLength(25);
+            });
+
+            modelBuilder.Entity<AuthUserStudent>(entity =>
+            {
+                entity.HasKey(e => e.Id)
+                    .HasName("auth_user_student_pkey");
+
+                entity.ToTable("auth_user_student");
+
+                entity.Property(e => e.Id)
+                    .IsRequired()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Username)
+                    .IsRequired()
+                    .HasColumnName("username")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasColumnName("password")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Salt)
+                    .IsRequired()
+                    .HasColumnName("salt")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.RefreshToken)    
+                    .HasColumnName("refresh_token")
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Student)
+                    .WithOne(p => p.AuthUserStudent)
+                    .HasForeignKey<AuthUserStudent>(d => d.Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("auth_user_student_id_fkey");
             });
 
             OnModelCreatingPartial(modelBuilder);

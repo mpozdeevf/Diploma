@@ -17,5 +17,6 @@ namespace UniversityData.Models
 
         public virtual StudentRequisite StudentRequisite { get; set; }
         public virtual ICollection<StudentGroup> StudentGroup { get; set; }
+        public virtual AuthUserStudent AuthUserStudent { get; set; }
     }
 }
