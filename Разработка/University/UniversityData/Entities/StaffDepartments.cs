@@ -1,6 +1,6 @@
-﻿namespace UniversityData.Models
+﻿namespace UniversityData.Entities
 {
-    public partial class StaffDepartmentLink
+    public partial class StaffDepartment
     {
         public int DepartmentId { get; set; }
         public int StaffId { get; set; }

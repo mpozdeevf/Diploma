@@ -5,25 +5,22 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using UniversityData;
-using UniversityData.Models;
+using UniversityData.Entities;
 
 namespace UniversityWebApi.Controllers
 {
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly UniversityContext _context;
+        private readonly UniversityDbContext _context;
         private readonly IConfiguration _config;
 
-        public AuthController(UniversityContext context, IConfiguration config)
+        public AuthController(UniversityDbContext context, IConfiguration config)
         {
             _context = context;
             _config = config;
@@ -33,7 +30,7 @@ namespace UniversityWebApi.Controllers
         [Route("authorize-student")]
         public IActionResult AuthorizeStudent(string username, string password)
         {
-            var user = _context.AuthUserStudents.FirstOrDefault(s => s.Username == username);
+            var user = _context.StudentsAuthData.FirstOrDefault(s => s.Username == username);
             if (user != null && IsCorrectPassword(user, password))
             {
                 var encodedJwt = GenerateAccessToken(user);
@@ -41,7 +38,7 @@ namespace UniversityWebApi.Controllers
                 user.RefreshToken = GenerateRefreshToken();
                 _context.SaveChanges();
 
-                return Ok(new { access_token = encodedJwt, user_id = user.Id, refresh_token = user.RefreshToken });
+                return Ok(new { access_token = encodedJwt, user_id = user.StudentId, refresh_token = user.RefreshToken });
             }
             else
             {
@@ -62,15 +59,14 @@ namespace UniversityWebApi.Controllers
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out securityToken);
+            var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
             if (!(securityToken is JwtSecurityToken jwtSecurityToken) || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCulture))
             {
                 return BadRequest(new { errorText = "Invalid access token" });
             }
 
             var username = principal.FindFirst(ClaimTypes.Name)?.Value;
-            var user = _context.AuthUserStudents.FirstOrDefault(u => u.Username == username);
+            var user = _context.StudentsAuthData.FirstOrDefault(u => u.Username == username);
 
             if (user == null)
             {
@@ -87,17 +83,17 @@ namespace UniversityWebApi.Controllers
             user.RefreshToken = GenerateRefreshToken();
             _context.SaveChanges();
 
-            return Ok(new { access_token = encodedJwt, user_id = user.Id, refresh_token = user.RefreshToken });
+            return Ok(new { access_token = encodedJwt, user_id = user.StudentId, refresh_token = user.RefreshToken });
         }
 
-        private bool IsCorrectPassword(AuthUserStudent user, string password)
+        private static bool IsCorrectPassword(StudentAuthData user, string password)
         {
             var salt = Convert.FromBase64String(user.Salt);
             var hashedPassword = GetHashedPassword(salt, password);
             return hashedPassword == user.Password;
         }
 
-        private string GetHashedPassword(byte[] salt, string password) =>
+        private static string GetHashedPassword(byte[] salt, string password) =>
             Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,
                 salt: salt,
@@ -105,7 +101,7 @@ namespace UniversityWebApi.Controllers
                 iterationCount: 10000,
                 numBytesRequested: 256 / 8));
 
-        private string GenerateAccessToken(AuthUserStudent user)
+        private string GenerateAccessToken(StudentAuthData user)
         {
             var claims = new List<Claim>
                 {
@@ -122,13 +118,11 @@ namespace UniversityWebApi.Controllers
             return encodedJwt;
         }
 
-        private string GenerateRefreshToken()
+        private static string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-            }
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
 
             return Convert.ToBase64String(randomNumber);
         }

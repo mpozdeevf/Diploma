@@ -4,16 +4,16 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using UniversityData;
-using UniversityData.Models;
+using UniversityData.Entities;
 
-namespace UniversityAuthApi.Controllers
+namespace UniversityWebApi.Controllers
 {
     [Route("api/[controller]")]
     public class RegistrationController : ControllerBase
     {
-        private readonly UniversityContext _context;
+        private readonly UniversityDbContext _context;
 
-        public RegistrationController(UniversityContext context)
+        public RegistrationController(UniversityDbContext context)
         {
             _context = context;
         }
@@ -23,25 +23,20 @@ namespace UniversityAuthApi.Controllers
         public IActionResult RegisterStudent(string studentNumber, string username, string password)
         {
             var student = _context.Students.FirstOrDefault(s => s.StudentNumber == studentNumber);
-            if (student != null)
+            if (student == null) return BadRequest();
+            var salt = GenerateSalt();
+            var hashedPassword = GetHashedPassword(salt, password);
+            _context.StudentsAuthData.Add(new StudentAuthData()
             {
-                var salt = GenerateSalt();
-                var hashedPassword = GetHashedPassword(salt, password);
-                _context.AuthUserStudents.Add(new AuthUserStudent
-                {
-                    Id = student.Id,
-                    Username = username,
-                    Password = hashedPassword,
-                    Salt = Convert.ToBase64String(salt),
-                    Student = student
-                });
-                _context.SaveChanges();
-                return Ok();
-            }
-            else
-            {
-                return BadRequest();
-            }
+                StudentId = student.Id,
+                Username = username,
+                Password = hashedPassword,
+                Salt = Convert.ToBase64String(salt),
+                Student = student
+            });
+            _context.SaveChanges();
+            
+            return Ok();
         }
 
         private byte[] GenerateSalt()

@@ -1,22 +1,24 @@
 ﻿using System.Collections.Generic;
 
-namespace UniversityData.Models
+namespace UniversityData.Entities
 {
     public partial class Institute
     {
         public Institute()
         {
-            Department = new HashSet<Department>();
+            Departments = new HashSet<Department>();
+            NewsReceivers = new HashSet<NewsReceiver>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Shortname { get; set; }
+        public string ShortName { get; set; }
         public int DirectorId { get; set; }
         public int DirectorDeputyId { get; set; }
 
         public virtual Staff Director { get; set; }
         public virtual Staff DirectorDeputy { get; set; }
-        public virtual ICollection<Department> Department { get; set; }
+        public virtual ICollection<Department> Departments { get; set; }
+        public virtual ICollection<NewsReceiver> NewsReceivers { get; set; }
     }
 }

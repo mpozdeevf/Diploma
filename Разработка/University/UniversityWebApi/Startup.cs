@@ -40,7 +40,7 @@ namespace UniversityWebApi
 
             services.AddControllers();
 
-            services.AddDbContext<UniversityContext>(builder =>
+            services.AddDbContext<UniversityDbContext>(builder =>
                 builder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
         }
 

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace UniversityData.Models
+﻿namespace UniversityData.Entities
 {
-    public partial class AuthUserStudent
+    public partial class StudentAuthData
     {
-        public int Id { get; set; }
+        public int StudentId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Salt { get; set; }
@@ -14,4 +10,4 @@ namespace UniversityData.Models
 
         public virtual Student Student { get; set; }
     }
-}   
+}
