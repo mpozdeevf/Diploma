@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using UniversityData;
+using UniversityData.DTO;
 using UniversityData.Entities;
 
 namespace UniversityWebApi.Controllers
@@ -22,7 +22,7 @@ namespace UniversityWebApi.Controllers
 
         [HttpGet]
         [Route("student-requisites")]
-        public ActionResult<StudentRequisites> GetUserStudentRequisites(int id)
+        public IActionResult GetUserStudentRequisites(int id)
         {
             var studentRequisite = _context.StudentRequisites.FirstOrDefault(sr => sr.StudentId == id);
             if (studentRequisite == null)
@@ -30,18 +30,45 @@ namespace UniversityWebApi.Controllers
                 return NotFound();
             }
 
-            return Ok(studentRequisite);
+            var group = _context.Groups.First(g => g.Id == studentRequisite.GroupId);
+            var student = _context.Students.First(s => s.Id == id);
+
+            return Ok(new StudentProfileData
+            {
+                StudentId = studentRequisite.StudentId, FullName = GetFullName(student.Name, student.Surname, student.Patronymic),
+                GroupName = group.Name, Mail = studentRequisite.EMail,
+                MobilePhone = studentRequisite.MobilePhoneNumber, HomePhone = studentRequisite.HomePhoneNumber
+            });
         }
 
-        [HttpGet("groupId")]
-        [Route("student-group")]
-        public IEnumerable<Group> GetStudentGroup(int groupId) =>
-            _context.Groups.Where(gs => gs.Id == groupId);
+        [HttpGet]
+        [Route("students")]
+        public ActionResult<IEnumerable<StudentData>> GetStudents(int id)
+        {
+            var studentRequisite = _context.StudentRequisites.FirstOrDefault(sr => sr.StudentId == id);
+            if (studentRequisite == null)
+            {
+                return NotFound();
+            }
 
-        [HttpGet("groupId")]
-        [Route("group-subjects")]
-        public IEnumerable<GroupSubject> GetGroupSubjects(int groupId) =>
-            _context.GroupsSubjects.Where(gs => gs.GroupId == groupId);
+            var studentsRequisites = _context.StudentRequisites.Where(sr => sr.GroupId == studentRequisite.GroupId);
+            var group = _context.Groups.First(g => g.Id == studentRequisite.GroupId);
+            var students = _context.Students
+                .Where(s => studentsRequisites.FirstOrDefault(sr => sr.StudentId == s.Id) != null)
+                .Select(s => new StudentData
+                {
+                    FullName = GetFullName(s.Name, s.Surname, s.Patronymic), 
+                    StudentId = s.Id,
+                    IsHead = s.Id == group.HeadId
+                });
+
+            return Ok(students);
+        }
+
+        private static string GetFullName(string name, string surname, string patronymic)
+        {
+            return (surname + " " + name + " " + patronymic).TrimEnd();
+        }
 
         #region TestData
 

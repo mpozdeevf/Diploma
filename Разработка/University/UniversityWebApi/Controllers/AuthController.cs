@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using UniversityData;
+using UniversityData.DTO;
 using UniversityData.Entities;
 
 namespace UniversityWebApi.Controllers
@@ -31,19 +32,15 @@ namespace UniversityWebApi.Controllers
         public IActionResult AuthorizeStudent(string username, string password)
         {
             var user = _context.StudentsAuthData.FirstOrDefault(s => s.Username == username);
-            if (user != null && IsCorrectPassword(user, password))
-            {
-                var encodedJwt = GenerateAccessToken(user);
+            if (user == null || !IsCorrectPassword(user, password))
+                return BadRequest(new ErrorData {ErrorText = "Invalid username or password."});
+            var encodedJwt = GenerateAccessToken(user);
 
-                user.RefreshToken = GenerateRefreshToken();
-                _context.SaveChanges();
+            user.RefreshToken = GenerateRefreshToken();
+            _context.SaveChanges();
 
-                return Ok(new { access_token = encodedJwt, user_id = user.StudentId, refresh_token = user.RefreshToken });
-            }
-            else
-            {
-                return BadRequest(new { errorText = "Invalid username or password." });
-            }
+            return Ok(new AuthData
+                {AccessToken = encodedJwt, UserId = user.StudentId, RefreshToken = user.RefreshToken});
         }
 
         [HttpPost]
@@ -60,9 +57,10 @@ namespace UniversityWebApi.Controllers
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
-            if (!(securityToken is JwtSecurityToken jwtSecurityToken) || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCulture))
+            if (!(securityToken is JwtSecurityToken jwtSecurityToken) ||
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCulture))
             {
-                return BadRequest(new { errorText = "Invalid access token" });
+                return BadRequest(new ErrorData {ErrorText = "Invalid access token"});
             }
 
             var username = principal.FindFirst(ClaimTypes.Name)?.Value;
@@ -70,12 +68,12 @@ namespace UniversityWebApi.Controllers
 
             if (user == null)
             {
-                return BadRequest(new { errorText = "Invalid access token" });
+                return BadRequest(new ErrorData {ErrorText = "Invalid access token"});
             }
 
             if (!user.RefreshToken.Equals(refreshToken, StringComparison.InvariantCulture))
             {
-                return BadRequest(new { errorText = "Invalid refresh token" });
+                return BadRequest(new ErrorData {ErrorText = "Invalid refresh token"});
             }
 
             var encodedJwt = GenerateAccessToken(user);
@@ -83,7 +81,8 @@ namespace UniversityWebApi.Controllers
             user.RefreshToken = GenerateRefreshToken();
             _context.SaveChanges();
 
-            return Ok(new { access_token = encodedJwt, user_id = user.StudentId, refresh_token = user.RefreshToken });
+            return Ok(new AuthData
+                {AccessToken = encodedJwt, UserId = user.StudentId, RefreshToken = user.RefreshToken});
         }
 
         private static bool IsCorrectPassword(StudentAuthData user, string password)
@@ -104,15 +103,17 @@ namespace UniversityWebApi.Controllers
         private string GenerateAccessToken(StudentAuthData user)
         {
             var claims = new List<Claim>
-                {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Username)
-                };
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Username)
+            };
             var jwt = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(1),
-                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"])), SecurityAlgorithms.HmacSha256));
+                expires: DateTime.Now.AddMinutes(60),
+                signingCredentials: new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"])),
+                    SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return encodedJwt;

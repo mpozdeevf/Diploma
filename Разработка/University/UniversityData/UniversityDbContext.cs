@@ -35,14 +35,14 @@ namespace UniversityData
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<SubjectInformation> SubjectsInformation { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Host=192.168.56.101;Port=5432;Username=postgres;Password=qweASD#21;Database=university1;");
-            }
-        }
+//         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//         {
+//             if (!optionsBuilder.IsConfigured)
+//             {
+// #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//                 optionsBuilder.UseNpgsql("Host=192.168.56.101;Port=5432;Username=postgres;Password=qweASD#21;Database=university1;");
+//             }
+//         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
