@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">diploma1</string>
+    <string name="profile_name">Профиль</string>
+    <string name="subjects_name">Предметы</string>
+    <string name="schedule_name">Расписание</string>
+    <string name="logout_name">Выйти</string>
+    <string name="vuz_name">ИжГТУ</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="user_name">Чертилов Черт Чертович</string>
+    <string name="email_name">Электронная почта</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="group_number">Номер группы</string>
+</resources>
