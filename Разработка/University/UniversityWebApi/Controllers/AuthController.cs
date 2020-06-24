@@ -47,42 +47,49 @@ namespace UniversityWebApi.Controllers
         [Route("refresh-access-token")]
         public IActionResult RefreshAccessToken(string accessToken, string refreshToken)
         {
-            var tokenValidationParameters = new TokenValidationParameters
+            try
             {
-                ValidateLifetime = false,
-                ValidIssuer = _config["Jwt:Issuer"],
-                ValidAudience = _config["Jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]))
-            };
+                var tokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateLifetime = false,
+                    ValidIssuer = _config["Jwt:Issuer"],
+                    ValidAudience = _config["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]))
+                };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
-            if (!(securityToken is JwtSecurityToken jwtSecurityToken) ||
-                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCulture))
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
+                if (!(securityToken is JwtSecurityToken jwtSecurityToken) ||
+                    !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCulture))
+                {
+                    return BadRequest(new ErrorData {ErrorText = "Invalid access token"});
+                }
+                
+                var username = principal.FindFirst(ClaimTypes.Name)?.Value;
+                var user = _context.StudentsAuthData.FirstOrDefault(u => u.Username == username);
+
+                if (user == null)
+                {
+                    return BadRequest(new ErrorData {ErrorText = "Invalid access token"});
+                }
+
+                if (!user.RefreshToken.Equals(refreshToken, StringComparison.InvariantCulture))
+                {
+                    return BadRequest(new ErrorData {ErrorText = "Invalid refresh token"});
+                }
+
+                var encodedJwt = GenerateAccessToken(user);
+
+                user.RefreshToken = GenerateRefreshToken();
+                _context.SaveChanges();
+
+                return Ok(new AuthData
+                    {AccessToken = encodedJwt, UserId = user.StudentId, RefreshToken = user.RefreshToken});
+            }
+            catch (Exception e)
             {
                 return BadRequest(new ErrorData {ErrorText = "Invalid access token"});
             }
-
-            var username = principal.FindFirst(ClaimTypes.Name)?.Value;
-            var user = _context.StudentsAuthData.FirstOrDefault(u => u.Username == username);
-
-            if (user == null)
-            {
-                return BadRequest(new ErrorData {ErrorText = "Invalid access token"});
-            }
-
-            if (!user.RefreshToken.Equals(refreshToken, StringComparison.InvariantCulture))
-            {
-                return BadRequest(new ErrorData {ErrorText = "Invalid refresh token"});
-            }
-
-            var encodedJwt = GenerateAccessToken(user);
-
-            user.RefreshToken = GenerateRefreshToken();
-            _context.SaveChanges();
-
-            return Ok(new AuthData
-                {AccessToken = encodedJwt, UserId = user.StudentId, RefreshToken = user.RefreshToken});
         }
 
         private static bool IsCorrectPassword(StudentAuthData user, string password)
